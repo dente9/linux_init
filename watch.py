@@ -420,15 +420,22 @@ def main(stdscr):
 
         elif k in KEY_MAP['KILL']:
             if final_procs:
-                curses.nocbreak(); stdscr.nodelay(False)
+                # [修改点] 改为 cbreak 模式 (立即响应按键)，并设置为阻塞等待 (False)
+                # 原代码是 curses.nocbreak() 导致需要回车
+                curses.cbreak(); stdscr.nodelay(False)
+
                 t = final_procs[sel_idx]
                 msg = f" KILL PID {t['pid']}? (Y/N) "
+                # 绘制提示信息
                 stdscr.addstr(H-2, W-len(msg)-2, msg, curses.color_pair(9)|curses.A_REVERSE)
                 stdscr.refresh()
+
                 check_k = stdscr.getch()
                 if check_k in KEY_MAP['CONFIRM']:
                     try: os.kill(t['pid'], signal.SIGKILL)
                     except: pass
+
+                # 恢复主循环的状态 (Halfdelay + Non-blocking)
                 curses.halfdelay(int(REFRESH_RATE*10)); stdscr.nodelay(True)
 
 if __name__ == "__main__":
