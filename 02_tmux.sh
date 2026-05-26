@@ -2,7 +2,7 @@
 
 # 获取脚本当前所在目录，确保无论在哪里运行脚本都能找到 tmux/tmux.conf
 BASE_DIR=$(cd "$(dirname "$0")"; pwd)
-SRC_CONF="${BASE_DIR}/tmux/tmux.conf"
+SRC_CONF="${BASE_DIR}/resource/tmux/tmux.conf"
 DEST_CONF="$HOME/.tmux.conf"
 
 echo ">>> [02_tmux.sh] 开始安装 Tmux..."
